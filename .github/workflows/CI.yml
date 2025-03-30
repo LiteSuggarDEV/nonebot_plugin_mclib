@@ -1,0 +1,31 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - master  # 指定触发分支
+    paths:
+      - '**'    # 监控所有文件变更（可按需调整）
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Set up Python
+        run: uv python install
+
+      - name: Build package
+        run: uv build  # 生成构建产物到dist目录
+
+      - name: Save build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-package
+          path: dist/*  # 上传所有构建产物
