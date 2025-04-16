@@ -1,14 +1,16 @@
+import base64
+import json
+import sys
+
+from aiohttp import ClientSession, ClientTimeout
 from nonebot import on_command
 from nonebot.adapters.onebot.v11 import (
-    MessageEvent,
-    GroupMessageEvent,
-    Message,
     Bot,
+    Message,
+    MessageEvent,
     MessageSegment,
 )
 from nonebot.params import CommandArg
-import sys, base64, json
-from aiohttp import ClientSession, ClientTimeout
 
 mc_body = on_command("mc-body", aliases={"MC-BODY"}, priority=10, block=True)
 mc_uuid = on_command(
@@ -26,7 +28,6 @@ async def get_uuid(player: str) -> str | None:
         "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.9 Safari/536.5"
     }
     async with ClientSession(headers=headers) as session:
-
         dicts: dict = await (
             await session.get(
                 f"https://api.mojang.com/users/profiles/minecraft/{player}",
@@ -59,8 +60,8 @@ async def _(event: MessageEvent, bot: Bot, args: Message = CommandArg()):
 async def _(event: MessageEvent, bot: Bot, args: Message = CommandArg()):
     if location := args.extract_plain_text():
         UUID = await get_uuid(player=location)
-        if UUID == None:
-            await mc_uuid.send(f"没有这个玩家！")
+        if UUID is None:
+            await mc_uuid.send("没有这个玩家！")
             return
         await mc_uuid.send(f"{location}的UUID是{UUID}")
 
@@ -73,8 +74,8 @@ async def _(event: MessageEvent, bot: Bot, args: Message = CommandArg()):
                 "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.9 Safari/536.5"
             }
             UUID = await get_uuid(player=location)
-            if UUID == None:
-                await mc_skin.send(f"没有这个玩家！")
+            if UUID is None:
+                await mc_skin.send("没有这个玩家！")
                 return
             try:
                 SKIN_dict = await (
@@ -83,8 +84,8 @@ async def _(event: MessageEvent, bot: Bot, args: Message = CommandArg()):
                         headers=headers,
                     )
                 ).json()
-            except:
-                await mc_skin.send(f"查询失败！")
+            except Exception:
+                await mc_skin.send("查询失败！")
                 return
             unbase = base64.b64decode(SKIN_dict["properties"][0]["value"])
             SKIN_LAST = json.loads(unbase)
@@ -105,11 +106,10 @@ async def _(event: MessageEvent, bot: Bot, args: Message = CommandArg()):
                 "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.9 Safari/536.5"
             }
         ) as session:
-
             try:
                 UUID = await get_uuid(player=arg)
-                if UUID == None:
-                    await mc_body.send(f"没有这个玩家！")
+                if UUID is None:
+                    await mc_body.send("没有这个玩家！")
                     return
                 image = await (
                     await session.get(

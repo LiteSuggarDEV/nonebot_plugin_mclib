@@ -1,5 +1,8 @@
 from nonebot.plugin import PluginMetadata
-from .server import *
+
+from . import player, server
+
+__all__ = ["server", "player"]
 
 
 __plugin_meta__ = PluginMetadata(
@@ -10,4 +13,3 @@ __plugin_meta__ = PluginMetadata(
     type="application",
     supported_adapters={"~onebot.v11"},
 )
-
