@@ -1,6 +1,6 @@
 [project]
 name = "nonebot_plugin_mclib"
-version = "0.0.2"
+version = "0.0.3"
 description = "我的世界服务器状态查询或正版玩家信息查询插件"
 authors = [{ name = "JohnRichard4096", email = "windowserror@163.com" }]
 dependencies = [
@@ -12,7 +12,7 @@ dependencies = [
 requires-python = ">=3.9, <4.0"
 readme = "README.md"
 license = { text = "GPL-3.0-or-later" }
-keywords = ['mc','nonebot']
+keywords = ['mc', 'nonebot']
 [build-system]
 requires = ['pdm-backend']
 build-backend = "pdm.backend"
