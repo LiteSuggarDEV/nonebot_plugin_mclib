@@ -12,15 +12,15 @@ from nonebot.adapters.onebot.v11 import (
 )
 from nonebot.params import CommandArg
 
-mc_body = on_command("mc-body", aliases={"MC-BODY"}, priority=10, block=True)
+mc_body = on_command("mc_body", aliases={"MC_BODY"}, priority=10, block=True)
 mc_uuid = on_command(
-    "mc-uuid",
-    aliases={"MC-UUID", "mc-UUID", "MC-uuid"},
+    "mc_uuid",
+    aliases={"MC_UUID", "mc_UUID", "MC_uuid"},
     priority=10,
     block=True,
 )
-mc_avatar = on_command("mc-avatar", priority=10, block=True)
-mc_skin = on_command("mc-skin", priority=10, block=True)
+mc_avatar = on_command("mc_avatar", priority=10, block=True)
+mc_skin = on_command("mc_skin", priority=10, block=True)
 
 
 async def get_uuid(player: str) -> str | None:
