@@ -15,11 +15,16 @@
 </div>
 
 # 快速开始
-1. 使用 pip 安装插件
+1.使用nb-cli安装插件
+```bash
+nb plugin install nonebot_plugin_mclib
+```
+
+2. 使用 pip 安装插件
 ```bash
 pip install nonebot-plugin-mclib
 ```
-并在pyproject.toml中添加插件
+此方法需要在pyproject.toml中添加插件
 ```toml
 plugins = ["nonebot_plugin_mclib"]
 # 添加nonebot_plugin_mclib
