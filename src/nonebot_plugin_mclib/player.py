@@ -1,9 +1,9 @@
 import base64
+from io import BytesIO
 import json
-import sys
 
 from aiohttp import ClientSession, ClientTimeout
-from nonebot import on_command
+from nonebot import logger, on_command
 from nonebot.adapters.onebot.v11 import (
     Bot,
     Message,
@@ -89,9 +89,9 @@ async def _(event: MessageEvent, bot: Bot, args: Message = CommandArg()):
                 return
             unbase = base64.b64decode(SKIN_dict["properties"][0]["value"])
             SKIN_LAST = json.loads(unbase)
-            message = MessageSegment.image(
-                await (await session.get(SKIN_LAST["textures"]["SKIN"]["url"])).read()
-            )
+            img_response = await session.get(SKIN_LAST["textures"]["SKIN"]["url"])
+            img_io = BytesIO(await img_response.read())
+            message = MessageSegment.image(img_io)
             await mc_skin.send(message)
 
     else:
@@ -118,9 +118,9 @@ async def _(event: MessageEvent, bot: Bot, args: Message = CommandArg()):
                     )
                 ).read()
                 await mc_body.send(MessageSegment.image(image))
-            except Exception:
-                exc_type, exc_value, exc_traceback = sys.exc_info()
-                await mc_body.send(f"过程发生了错误：{str(exc_value)}")
+            except Exception as e:
+                logger.opt(exception=e, colors=True).exception("[MCBODY] 获取失败")
+                await mc_body.send(f"过程发生了错误：{str(e)}")
 
                 return
     else:

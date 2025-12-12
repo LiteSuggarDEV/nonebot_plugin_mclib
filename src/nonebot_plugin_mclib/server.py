@@ -42,7 +42,7 @@ def parse_host_port(location: str) -> tuple[str, int]:
 async def get_server_status(host: str, port: int) -> tuple[JavaServer, dict]:
     server = JavaServer.lookup(f"{host}:{port}")
     status = server.status()
-    return server, status.raw
+    return server, status.raw # type: ignore
 
 
 def resolve_a_record(host: str) -> str:
@@ -56,8 +56,7 @@ def format_be_status_message(raw: BedrockStatusResponse, address: str) -> str:
     延迟：{int(raw.latency)}ms
     地图名称：{raw.map_name}
     游戏模式：{raw.gamemode}
-    玩家数{raw.players.online}/{raw.players.max}
-    玩家数：{raw.players_online}/{raw.players_max}
+    玩家数：{raw.players.online}/{raw.players.max}
     MOTD: {raw.motd}
     """
 
